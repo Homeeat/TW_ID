@@ -1,0 +1,43 @@
+# 地區代碼 A => 10 , B => 11, C => 12  ....
+areas_letter = c('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 
+          'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 
+          'U', 'V', 'W', 'X', 'Y', 'Z')
+areas = c(10, 11, 12, 13, 14, 15, 16, 17, 34, 18, 19, 20,
+          21, 22, 35, 23, 24, 25, 26, 27, 28, 29, 32, 30,
+          31, 33)
+
+# 算出所有可能的組合
+for ( area in 1:26 ) { # id 地區
+  for( i in 0:9999999 ) { # id 數字第 2 - 8 碼所有可能總數
+    score = 0
+    # 男生第一碼固定為 1
+    id = TW_ID('1')
+    print(id)
+    # 女生第一碼固定為 2
+    id = TW_ID('2')
+    print(id)
+  }
+}
+
+# 依據男女做計算
+TW_ID <- function(gender) {
+  number = paste(areas[area], gender, sep = '')
+  number = paste(number, sprintf('%07d', i), sep = '')
+  number = strsplit(toString(number), '')[[1]]
+  number = as.integer(number)
+  # 加上權數算總分
+  for( j in 1:10 ) {
+    if(j == 1) {
+      score = number[j] * j
+    } else {
+      score = score + number[j] * (11 - j)
+    }
+  }
+  # 產出驗證碼 （第 9 碼）
+  verification = score %% 10
+  # 產出完整的身份證
+  id = paste(areas_letter[area], gender, sep = '')
+  id = paste(id, sprintf('%07d', i), sep = '')
+  id = paste(id, verification, sep = '')
+  return(id)
+}
